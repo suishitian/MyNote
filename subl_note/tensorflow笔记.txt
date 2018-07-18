@@ -1,0 +1,73 @@
+tensorflow学习笔记
+
+第三章 Tensorflow入门
+3.1 Tensorflow计算模型--计算图
+  1.张量：Tensor，可以被简单的理解为多维数组。
+  2.计算图：Tensorflow中的每一个计算都是计算图上的一个点，而节点之间的边则描述了计算之间的依赖关系。
+3.2 计算图的使用
+  1.定义阶段：
+  eg:
+  import tensorflow as tf
+  a = tf.constant([1.0,2.0],name="a")
+  b = tf.constant([2.0,3.0],name="b")
+  result = a+b
+  以上代码都在一个计算图上。
+  2.不同的计算图上的张量和运算不会共享
+  3.与计算图相关的部分API：
+    (1)tf.Graph()  ----  生成一个计算图
+    eg:g1 = tf.Graph()  ----  生成一个计算图g1
+       g1 = tf.Graph()  ----  生成另一个计算图g2
+    (2)print(a.graph is tf.get_default_graph())  ----  a为代码前面的一个变量，这句话会print一个Boolean用来判断a是否在默认的计算图上
+  4.计算图不仅可以用来隔离张量和计算，还提供了管理张量和计算的机制。
+    (1)
+      with tf.Session(graph = g1) as sess:  ----  with后面的所有操作都只发生在计算图g1上，其他计算图上的变量不会受到影响
+      	tf.initialize_all_variables().run()
+      	with tf.variable_scope("",reuse=True)
+      		print(sess.run(tf.get_variable("v")))
+  5.tf.Graph.device用来指定计算图运行计算的设备(CPU,GPU)
+  eg:
+    g = tf.Graph()
+    with g.device('/gpu:0')
+    	result = a+b
+3.2  tensorflow数据模型--张量
+  3.2.1 张量的概念
+    1.张量可以简单的被理解为多维数组。0阶张量可以理解为一个n维数组。但是实际上张量只是tensorflow对运算结果的引用。张量中并没有真正保存数值，保存的是数字的计算过程。
+    2.张量的创建：
+      a = tf.constant([1.0,2.0],name="a")
+      b = tf.constant([1.0,3.0],name="b")
+      result = a+b  ----  其中result就是一个张量，此处没有真正计算a+b的值，只是保存了result的计算过程，只是一个引用
+    3.张量的三个属性：
+      print result
+      //Tensor("add:0" ,shape = (2,), dtype=float32)  ----  输出结果
+      (1)名字name：第一个属性名字是一个张量的唯一标识符，同样这个名字也代表着张量是如何计算出来的。
+         名字规则是node:src_output：计算图上的的node节点上的第src_output个输出(add:0代表add节点上的第1(索引是0)个输出)
+      (2)维度shape：描述了张量的维度
+      (3)数据类型type：每一个张量会有一个唯一的类型。tensorflow会对所有参与运算的张量进行类型检查，不匹配就会报错
+    4.张量的使用
+      (1)使用张量记录中间结果：
+        a = tf.constant([1.0,2.0],name="a")
+      (2)使用张量记录计算过程
+        result = a+b
+        tf.Session().run(result)  ----  用这个来得到结果，其中result就是张量，储存的是计算过程
+3.3 tensorflow运行模型--会话
+  1.会话Session是用来执行定义好的运算，可以管理程序运行时的所有资源。
+  2.使用会话的两种模式：
+    (1)需要明确调用会话生成函数和显示的关闭会话函数：
+      sess = tf.Session()  ----  生成会话
+      sess.run(...)  ----执行某种操作
+      sess.close()  ----  必须显示的关闭该会话
+      可以通过with来确保程序一定会正确关闭会话
+      with tf.Session() as sess:
+      	  sess.run(...)  ----  不需要显示的调用sess.close()，上下文with退出时候会自动关闭和资源释放，只要将所有的计算放在with内部就行了
+    (2)手动指定一个默认的会话，然后可以通过tf.Tensor.eval函数来进行计算某个张量的取值
+      sess = tf.Session()
+      with sess.as_default():
+      	  print(result.eval())  ----  使用.eval()来计算张量的值，因为已经指定了默认的会话
+    (3)自动将生成的会话注册为默认会话：
+      sess = tf.InteractiveSession()  ----  省去指定为默认会话的过程
+      print(result.eval())
+      sess.close()
+    (4)在创建会话的时候进行设置：
+      config = tf.ConfigProto(allow_soft_placement = True, log_device_placement=True)
+      sess1 = tf.InteractiveSession(config=config)  ----  两种方式都可以使用config进行设置
+      sess2 = tf.Session(config=config)
