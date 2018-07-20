@@ -1,0 +1,65 @@
+golang 语法总结
+1.变量声明：类型在变量的后面：
+  var v1 int = 5
+2.变量初始化：
+  var v2 int = 30
+  var v3 = 40 ----  类型自动推断
+  v4 :=   ----  同时进行声明和初始化，:=左侧要至少有一个未被初始化的变量
+3.交换：
+  i,j = j,i  ----  i,j的值进行交换
+4.func可以有多个返回值：
+  func getName(num int) (a,b,c string){  ----  参数的类型写在参数后面，返回值写在函数后面
+  	return "a","b""c"
+  }
+  a1,b1,c1 := getName()  ----  使用逗号获得多个返回值
+  _,b1,c1 := getName()  ----  当不需要某个返回值的时候，可以使用缺省值
+5.iota变量：是自动增长的变量，在被const修饰的时候会自动初始化为0
+eg:
+  const(
+    a = iota  //a = 0
+    b = iota  //b = 1
+    c = iota  //c = 2
+  )
+6.golang中的数组操作全部都是值传递，在进行索引操作的时候需要使用数组切片slice
+  (1)数组声明：数组的长度不可变
+    ->var arr [2]int  ----  var arr[数组长度]数组类型
+      arr[0]=1
+      arr[1]=2
+    ->var arr = [2]int{1,2}  ----  var arr[数组长度]数组类型{数组初始化内容}
+      arr := [2]int{1,2}
+    ->var arr = [...]int{1,2}  ----  编译器自己决定数组的长度
+      var arr [...]int{1,2}
+  (2)数组遍历：a为某数组
+    ->for i:=0;i<len(a);i++{
+    	  ...
+      }
+    ->for i,v := range a{  ----  i为索引，v为对应的元素
+    	  ...
+      }
+    ->for _,v := range a{  ----  只访问数组元素
+    	  ...
+      }
+   (3)多维数组：
+     var b [3][2]string
+   (4)数组切片
+     ->a := [5]int{76, 77, 78, 79, 80}
+       var b []int = a[1:4]  ----  b为a的切片
+     ->c := []int{6, 7, 8}  ----  直接返回一个切片
+     ->i := make([]int, 5, 5)  ----  使用make创建切片，其中的一个5可以省略，可以使用append()和copy()对切片进行操作，切片的初始值为0
+7.map:map是一个数据类型，不是一个容器
+  (1)初始化：
+    myMap:=make(map[string]int)  ----  map[keytype]valuetype,只创建了索引
+    myMap:=make(map[string]int){}  ----  将map初始化为什么都没有
+  (2)增删元素：
+    map["haha"] = 50  ----  如果有Key则修改，没有则添加
+  (3)取值：
+    value, ok := map1["haha1"]  ----  返回两个值，如果成功取值，value为取出值，ok为true；取值不成功，ok为false
+
+
+
+
+
+
+
+
+
