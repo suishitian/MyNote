@@ -1,0 +1,6 @@
+import tensorflow as tf 
+INPUT_NODE = 100
+OUTPUT_NODE = 10
+LAYER1_NODE = 200
+LAYER2_NODE = 300
+
