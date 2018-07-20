@@ -13,7 +13,7 @@ golang 语法总结
   }
   a1,b1,c1 := getName()  ----  使用逗号获得多个返回值
   _,b1,c1 := getName()  ----  当不需要某个返回值的时候，可以使用缺省值
-5.iota变量：是自动增长的变量，在被const修饰的时候会自动初始化为0
+5.iota变量：是自动增长的变量，在被const修饰的时候会自动初始化为0，(const是常量)
 eg:
   const(
     a = iota  //a = 0
@@ -41,7 +41,7 @@ eg:
       }
    (3)多维数组：
      var b [3][2]string
-   (4)数组切片
+   (4)数组切片：传递的是数组的引用
      ->a := [5]int{76, 77, 78, 79, 80}
        var b []int = a[1:4]  ----  b为a的切片
      ->c := []int{6, 7, 8}  ----  直接返回一个切片
@@ -54,6 +54,121 @@ eg:
     map["haha"] = 50  ----  如果有Key则修改，没有则添加
   (3)取值：
     value, ok := map1["haha1"]  ----  返回两个值，如果成功取值，value为取出值，ok为true；取值不成功，ok为false
+8.go支持的全部数据类型：
+  布尔型 bool 
+  整形 int8, byte, int16, int, uint, uintptr 
+  浮点类型： float32 (c中的float ), float64 ( c中的double ) 
+  复数类型: complex64, complex128(go中特有的) 
+  字符串： string (内置类型) 
+  字符类型: rune(Unicode字符类型), byte(UTF-8字符类型) 
+  错误类型: error 
+  
+  以及复合类型: 
+  指针: pointer 数组: array 切片: slice 
+  字典: map 通道: chan 结构体: struct 接口: interface
+9.解析json:(使用库"encoding/json")
+  (1)生成json文件：
+    type ABC struct {
+	  Name string
+	  Body string
+	  age  int64
+    }
+
+	m := ABC{"hehehe", "asdasd", 654654}
+	var j []byte
+	j, err := json.Marshal(m)  ----  使用json.Marshal()来生成json的byte[]
+  (2)解析json:
+    var jj map[string]interface{}  ----  讲json的[]byte转化成map，然后通过map取值
+	err = json.Unmarshal(j, &jj)
+	aa, ok2 := jj["Name"]
+10.socket(TCP):
+  (写API也没用，直接上完整代码)：
+  (1)client:
+    package main
+
+    import (
+	  "fmt"
+	  "net"  ----  需要用到的库
+    )
+
+    func CheckError(err error, str string) {
+	    if err != nil {
+		    fmt.Println(str)
+	    }
+    }
+
+    func receiveInfo(conn net.Conn) {  ----  net.Conn是一个表示连接的类，作为参数
+	    for {
+		    buffer := make([]byte, 1024)  ----  发送的实际是byte数组
+		    conn.Read(buffer)  ----  从连接中读取
+		    fmt.Println("sendBack: " + string(buffer))
+	    }
+    }
+
+    func send(conn net.Conn, str string) {
+	    buffer := []byte(str)
+	    conn.Write(buffer)  ----  从连接中发送
+	    fmt.Println("send successfully")
+    }
+    func main() {
+	    server := "127.0.0.1:8888"
+	    tcpAddr, err := net.ResolveTCPAddr("tcp4", server)  ----  将string的ip地址解析为net的形式
+	    conn, err := net.DialTCP("tcp", nil, tcpAddr)  ----  使用tcp协议与服务器建立连接(拨号)
+	    CheckError(err, "connected failed")
+	    go receiveInfo(conn)  ----  启动新线程处理连接(收到信息就立刻打印出来)
+	    for {
+		    var content string
+		    fmt.Println("please input: ")
+		    fmt.Scanln(&content)  ----  读取输入
+		    send(conn, content)  ----  调用发送函数进行发送
+	    }
+    }
+  (2)server:
+    package main
+
+    import (
+    	"fmt"
+    	"net"
+    )    
+
+    func CheckError(err error, str string) {
+    	if err != nil {
+    		fmt.Println(str)
+    	}
+    }    
+
+    func handleClient(conn net.Conn) {  ----  放收到客户端的信息进行处理，将收到的信息发送回去
+    	for {
+    		send(conn, string(receive(conn)))
+    	}
+    }    
+
+    func receive(conn net.Conn) []byte {  ----  接受函数返回一个[]byte数组
+    	buffer := make([]byte, 1024)
+    	conn.Read(buffer)  ----  通过连接进行读取
+    	fmt.Println(string(buffer))
+    	return buffer
+    }
+    func send(conn net.Conn, str string) {  ----  发送函数
+    	buffer := []byte(str)
+    	conn.Write(buffer)  ----  通过连接进行写入
+    	fmt.Println("send successfully")
+    }    
+
+    func main() {   
+    	fmt.Println("waiting for the client")
+    	netListen, err := net.Listen("tcp", "127.0.0.1:8888")  ----  对本机8888端口进行监听
+    	defer func(listen net.Listener) {  ---- 延时运行函数，在外部方法运行结束之前调用，可以当做析构函数用来清理资源
+    		listen.Close()
+    	}(netListen)
+    	CheckError(err, "establish socket failed")    
+
+    	for {
+    		conn, err := netListen.Accept()  ----  一旦接受到信息，就返回相应的conn连接对象
+    		CheckError(err, "connected failed")
+    		go handleClient(conn)  ----  建立新线程处理接受到的东西
+    	}
+    }
 
 
 
