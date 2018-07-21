@@ -79,8 +79,8 @@ eg:
 	j, err := json.Marshal(m)  ----  使用json.Marshal()来生成json的byte[]
   (2)解析json:
     var jj map[string]interface{}  ----  讲json的[]byte转化成map，然后通过map取值
-	err = json.Unmarshal(j, &jj)
-	aa, ok2 := jj["Name"]
+	  err = json.Unmarshal(j, &jj)
+	  aa, ok2 := jj["Name"]
 10.socket(TCP):
   (写API也没用，直接上完整代码)：
   (1)client:

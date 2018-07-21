@@ -6,7 +6,6 @@ import (
 	//"log"
 	"net"
 	//"os"
-	"encoding/json"
 )
 
 func CheckError(err error, str string) {
@@ -17,8 +16,7 @@ func CheckError(err error, str string) {
 
 func handleClient(conn net.Conn) {
 	for {
-		//send(conn, string(receive(conn)))
-		//analyze json
+		send(conn, string(receive(conn)))
 	}
 }
 
