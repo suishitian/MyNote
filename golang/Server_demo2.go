@@ -20,11 +20,11 @@ func handleClient(conn net.Conn) {
 	}
 }
 
-func receive(conn net.Conn) []byte {
+func receive(conn net.Conn) {
 	buffer := make([]byte, 1024)
 	conn.Read(buffer)
-	fmt.Println(string(buffer))
-	return buffer
+	bufferr := buffer[5:]
+	fmt.Println(string(bufferr))
 }
 func send(conn net.Conn, str string) {
 	buffer := []byte(str)

@@ -52,8 +52,13 @@ eg:
     myMap:=make(map[string]int){}  ----  将map初始化为什么都没有
   (2)增删元素：
     map["haha"] = 50  ----  如果有Key则修改，没有则添加
+    delete(myMap,key)  ----  删除myMay中的key-value对
   (3)取值：
     value, ok := map1["haha1"]  ----  返回两个值，如果成功取值，value为取出值，ok为true；取值不成功，ok为false
+  (4)遍历：
+    for k,v := range myMap{  ----  k为key，v为value
+      ....
+    }
 8.go支持的全部数据类型：
   布尔型 bool 
   整形 int8, byte, int16, int, uint, uintptr 
@@ -301,13 +306,13 @@ eg:
     )
     func produce(p chan<- int) {
         for i := 0; i < 10; i++ {
-            p <- i
+            p <- i  ----  写入
             fmt.Println("send:", i)
         }
     }
     func consumer(c <-chan int) {
         for i := 0; i < 10; i++ {
-            v := <-c
+            v := <-c  ----  读取
             fmt.Println("receive:", v)
         }
     }
@@ -317,10 +322,11 @@ eg:
         go consumer(ch)
         time.Sleep(1 * time.Second)
     } 
-
-
-
-
+15.init函数
+  (1)每个package里面都可以定义一个func init(){}，这个函数不能有参数，不能有返回值。可以在同一个包下面定义多个，调用顺序从上到下。相当于java中的构造函数。
+  (2)与main()的区别
+    init()每一个Package都可以有一个，main只能有一个。main()也不能有任何参数，也不能有返回值。
+16.io/ioutil包：
 
 
 
