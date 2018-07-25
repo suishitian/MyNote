@@ -374,9 +374,76 @@ tensorflow学习笔记
     交叉验证：讲一个数据分为k分，其中的一份用作测试数据，剩余的k-1份用作训练。然后重复k次，让每一份k得到验证，就是交叉验证
   5.2.3 不同模型的效果比较
     P102
+
 5.3 变量管理
   1.tensorflow中提供了通过变量名称来创建或者获取一个变量的机制。通过这个机制可以在不同函数中直接通过获取变量的名字来使用变量。而不需要将变量通过参数的形式到处传递。主要是通过tf.get_variable和tf.variable_scope实现的
   2.用tf.get_variable和tf.Variable创建变量
     v = tf.get_variable("v",shape=[1],initializer=tf.constant_initializer(1.0))  ----  这两句几乎没有区别
     v = tf.Variable(tf.constant(1.0,shape=[1],name="v"))
   3.用tf.get_variable生成变量时候，如果变量名已经定义过，就会报错。想用get_variable获取变量，则需要使用tf.variable_scope生成一个上下文
+    with tf.Variable_scope("foo"):
+      v = tf.get_variable("v",[1],initializer = tf.constant_initializer(1.0))
+    with tf.Variable_scope("foo"):
+      //v = tf.get_variable("v",1)  ----  这一句会报错，因为上面已经在foo命名空间中间定义过v了，重复定义会报错
+    with tf.Variable_scope("foo",reuse=True):  ----  如果在生成命名空间的时候加上reuse=True，则会直接获取已经声明了的变量
+      v1 = tf.get_variable("v",[1])  ----  获取已经声明过的v
+      print v==v1  ----  输出为true
+    with tf.variable_scope("bar",reuse=True):  ----  将参数设置为reuse=true时候，则只能获取已经声明过的变量
+      v = tf.get_variable("v",1)  ----  报错，因为v在bar中没有声明过
+  4.scope可以嵌套：内层如果不指定，则reuse跟随外层
+    with tf.bariable_scope("root"):  ----  最外层不指定为false
+      with tf.variable_scope("foo",reuse=True)
+        ...
+        with tf.variable_scope("bar")  ----  这里的reuse为True,不指定就跟随外层
+      ....  ----  回到这里之后，又为false
+  5.使用scope管理变量：在命名空间中创建的变量都会带上这个命名空间名作为前缀
+    v1 = tf.get_variable("v",[1])
+    print v1.name  ----  输出v:0
+
+    with tf.variable_scope("foo"):
+      v2 = tf.get_variable("v",[1])
+      print v2.name  ----  输出foo/v:0
+
+    with tf.variable_scope("foo"):
+      with tf.variable_scope("bar"):
+        v3 = tf.get_variable("v",[1])
+        print v3.name  ----  输出foo/bar/v:0
+    with tf.variable_scope("",reuse = True)
+      v4 = tf.get_variable("foo/bar/v",[1])  ----  也可以直接制定命名空间
+    print v4==v3  ----  True
+  6.使用命名空间改进前向传播函数inference:
+
+    def inference(input_tensor,reuse=False):  ----  第一次调用使用false，用来生成变量，计算的时候使用True用来直接获取变量
+      with tf.variable_scope('layer1',reuse=reuse):
+          weights = tf.get_variable("weights",[INPUT_NODE,LAYER1_NODE],initializer=tf.truncated_normal_initializer(stddev=))
+          biases = tf.get_variable("biases",[LAYER1_NODE]，initializer=tf.constant_initializer(0.0))
+          layer1 = tf.nn.relu(tf.matmul(input_tensor,weights)+biases)
+      with tf.variable_scope('layer2',reuse=reuse):
+          weights = tf.get_variable("weights",[LAYER1_NODE,OUTPUT_NODE],initializer=tf.truncated_normal_initializer(stddev=))
+          biases = tf.get_variable("biases",[OUTPUT_NODE]，initializer=tf.constant_initializer(0.0))
+          layer2 = tf.matmul(input_tensor,weights)+biases
+      return layer
+
+5.4 TensorFlow模型持久化：
+  5.4.1 持久化代码实现
+    1.使用tf.train.Saver()来保存模型
+      import tensorflow as tf
+        v1 = tf.Variable(tf.constant(1.0,shape=[1],name="v1"))
+        v2 = tf.Variable(tf.constant(2.0,shape=[1],name="v2"))
+        result = v1+v2      
+        init_op = tf.initialize_all_variables()       
+        saver = tf.train.Saver()  ----  单纯为了获取一个Saver对象
+        with tf.Session() as sess:
+            sess.run(init_op)
+            saver.save(sess,"model.ckpt")  ----  要注意，保存的时候，会话也作为输入参数
+    2.Saver会在目录下生成三个文件：
+      (1)model.ckpt.meta:保存了tensorflow的计算图的结构
+      (2)model.ckpt:保存了程序中每一个变量的取值
+      (3)checkpoint:后面会详细讲解
+    3.使用tf.train.Saver()来恢复模型：
+      import tensorflow as tf
+      saver = tf.train.import_meta_graph("model.ckpt.meta")  ----  恢复数据
+      with tf.Session() as sess:
+        saver.restore(sess,"model.ckpt")  ----  恢复计算图
+        print sess.run(tf.get_default_graph().get_tensor_by_name("add:0"))  ----  计算计算图中的某个节点的输出值
+
