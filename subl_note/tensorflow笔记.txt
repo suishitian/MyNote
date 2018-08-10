@@ -447,3 +447,297 @@ tensorflow学习笔记
         saver.restore(sess,"model.ckpt")  ----  恢复计算图
         print sess.run(tf.get_default_graph().get_tensor_by_name("add:0"))  ----  计算计算图中的某个节点的输出值
 
+    4.使用Saver()加载部分数据,tensorflow通过字典将模型保存时的变量名和需要加载的变量联系起来：
+      Saver = tf.train.Saver({"v1":new_v1,"v2":new_v2})  ----  不仅可以加载部分数据，还可以对数据进行重命名
+    5.使用Saver()保存EMA数据：
+        import tensorflow as tf
+          v = tf.Variable(0,dtype = tf.float32,name="v")          
+
+          for variable in tf.all_variables():
+              print variable.name
+              
+          ema = tf.train.ExponentialMovingAverage(0.99)
+          maintain_averages_op = ema.apply(tf.all_variables())
+          saver = tf.train.Saver()
+          for variable in tf.all_variables():
+              print variable.name
+              
+          with tf.Session() as sess:
+              init_op = tf.initialize_all_variables()
+              sess.run(init_op)         
+
+              sess.run(tf.assign(v,10))
+              sess.run(maintain_averages_op)          
+
+              saver.save(sess,"model1.ckpt")  ----  讲数据保存在model1模型中
+              print sess.run([v,ema.average(v)])
+    6.使用Saver()提取EMA数据：
+      import tensorflow as tf
+      v = tf.Variable(0,dtype = tf.float32,name="v")
+      ema = tf.train.ExponentialMovingAverage(0.99)
+      print ema.variables_to_restore()        
+
+      saver = tf.train.Saver(ema.variables_to_restore())  ----  这句将EMA类中的一个方法作为输入，则提取的数据则为EMA数据
+      #saver = tf.train.Saver()  ----  如果不讲EMA的那个方法作为输入，则这句会正常输入数据的真实值
+
+      with tf.Session() as sess:
+          saver.restore(sess,"model1.ckpt")
+          print sess.run(v)
+    7.可以将生成的三个文件合成为一个，直接讲训练好的变量存储为常量，在迁移学习的时候会用到，需要使用convert_variables_to_contants
+      import tensorflow as tf
+      from tensorflow.python.framework import graph_util      
+
+      v1 = tf.Variable(tf.constant([1.0],shape=[1]),name = "v1")
+      v2 = tf.Variable(tf.constant([2.0],shape=[1]),name = "v2")
+      result = v1+v2      
+
+      init_op = tf.initialize_all_variables()
+      with tf.Session() as sess:
+          sess.run(init_op)
+          graph_def = tf.get_default_graph().as_graph_def()  ----  到处计算图GraphDef部分，只需要这一部分就可以完成从输入层到输出层的计算  
+
+          output_graph_def = graph_util.convert_variables_to_constants(sess,graph_def,['add'])  ----  ['add']为节点的名称(节点的名称没有:0)
+          with tf.gfile.GFile("combined_model.pb","wb") as f:
+              f.write(output_graph_def.SerializeToString())  ----  写入
+      提取：
+      import tensorflow as tf
+      from tensorflow.python.platform import gfile
+      with tf.Session() as sess:
+          model_filename = "combined_model.pb"
+          with gfile.FastGFile(model_filename,'rb') as f:  ----  读取文件
+              graph_def = tf.GraphDef()
+              graph_def.ParseFromString(f.read())      
+
+          result = tf.import_graph_def(graph_def,return_elements=["add:0"])  ----  读取图中的计算，这里使用了["add:0"]是因为这里需要的是张量，(张量的名称有:0)
+          print sess.run(result)
+  5.4.2 持久化原理及数据格式
+    1.元图MetaGraphDef,.meta为后缀名:
+      (1)MetaGraphDef格式：
+        message MetaGraphDef{
+          MetaInfoDef meta_info_def = 1;  ----  记录了元数据以及用到的所有计算方法的信息P117
+          GraphDef graph_def = 2;  ----  主要记录了图上的节点信息，只关注运算的连接结构P119
+          SaverDef saver_def = 3;  ----  持久化模型需要用到的一些参数，比如保存文件的文件名，保存操作，加载操作等
+          map<string,CollectionDef> collection_def = 4;
+          map<string,SignatureDef> signature_def = 5;
+        }
+      (2).ckpt文件：保存了所有变量的取值，这个文件是通过SSTable格式储存的(其实就是一个key,value列表)
+      (3)checkpoint：由tf.train.Saver()类自行维护，持久化了所有tensorflow模型文件的文件名，当某个模型文件被删除时候，这个文件所对应的文件名也会从checkpoint中删除
+    2.使用tf.train.NewCheckpointReader类读取.cpkt中保存的变量
+      import tensorflow as tf
+        reader = tf.train.NewCheckpointReader("model.ckpt")
+        all_variables = reader.get_variable_to_shape_map()
+        for variable_name in all_variables:
+            print variable_name,all_variables[variable_name]        
+
+        print "value of v1 is", reader.get_tensor("v")  ----  使用reader提取制定变量名的变量
+5.5 TensorFlow最佳时间样例程序
+  将原来的mnist训练分成三个文件：
+    mnist_inference.py  ----  定义了前向传播的过程以及神经网络中的参数
+    mnist_train.py  ----  定义神经网络训练的过程
+    mnist_eval.py  ----  定义了测试过程
+  (1)mnist_inference:
+    import tensorflow as tf
+      INPUT_NODE = 784
+      OUTPUT_NODE = 10
+      LAYER1_NODE = 500     
+
+      def get_weight_variable(shape,regularizer):
+          weights = tf.get_variable("weights",shape
+                                    ,initializer=tf.truncated_normal_initializer(stddev=0.1))
+          if regularizer != None:
+              tf.add_to_collection('losses',regularizer(weights))
+          return weights      
+
+      def inference(input_tensor,regularizer):
+          with tf.variable_scope('layer1'):
+              weights = get_weight_variable([INPUT_NODE,LAYER1_NODE],regularizer)
+              biases = tf.get_variable("biases",[LAYER1_NODE]
+                                       ,initializer=tf.constant_initializer(0.0))
+              layer1 = tf.nn.relu(tf.matmul(input_tensor,weights)+biases)     
+
+          with tf.variable_scope('layer2'):
+              weights = get_weight_variable([LAYER1_NODE,OUTPUT_NODE],regularizer)
+              biases = tf.get_variable("biases",[OUTPUT_NODE]
+                                       ,initializer=tf.constant_initializer(0.0))
+              layer2 = tf.matmul(layer1,weights)+biases
+          return layer2
+  (2)mnist_train:
+    import tensorflow as tf
+    import os
+    from tensorflow.examples.tutorials.mnist import input_data    
+
+    import mnist_inference    
+
+    BATCH_SIZE = 100
+    LEARNING_RATE_BASE = 0.8
+    LEARNING_RATE_DECAY = 0.99
+    REGULARAZTION_RATE = 0.0001
+    TRAIN_STEPS = 10000
+    MOVING_AVERAGE_DECAY = 0.99    
+
+    MODEL_SAVE_PATH = "/data"
+    MODEL_NAME = "model.ckpt"
+    def train(mnist):
+        print "train start"
+        x = tf.placeholder(tf.float32,[None,mnist_inference.INPUT_NODE],name="x-input")
+        y_ = tf.placeholder(tf.float32,[None,mnist_inference.OUTPUT_NODE],name="y-input")    
+
+        regularizer = tf.contrib.layers.l2_regularizer(REGULARAZTION_RATE)
+        y = mnist_inference.inference(x,regularizer)
+        global_step = tf.Variable(0,trainable=False)    
+
+        ema = tf.train.ExponentialMovingAverage(MOVING_AVERAGE_DECAY,global_step)
+        ema_op = ema.apply(tf.trainable_variables())
+        cross_entropy = tf.nn.sparse_softmax_cross_entropy_with_logits(logits=y,labels=tf.argmax(y_,1))
+        cross_entropy_mean = tf.reduce_mean(cross_entropy)
+        loss = cross_entropy_mean + tf.add_n(tf.get_collection('losses'))
+        learning_rate = tf.train.exponential_decay(
+            LEARNING_RATE_BASE,
+            global_step,
+            mnist.train.num_examples/BATCH_SIZE,
+            LEARNING_RATE_DECAY)
+        train_step = tf.train.GradientDescentOptimizer(learning_rate).minimize(loss,global_step=global_step)
+        with tf.control_dependencies([train_step,ema_op]):
+            train_op = tf.no_op(name='train')
+        saver = tf.train.Saver()
+        with tf.Session() as sess:
+            sess.run(tf.global_variables_initializer())
+            print "before for loop"
+            for i in range(TRAIN_STEPS):
+                xs,ys = mnist.train.next_batch(BATCH_SIZE)
+                _,loss_value,step = sess.run([train_op,loss,global_step],feed_dict={x:xs,y_:ys})
+                
+                if i%1000==0:
+                    print("After %d training step, loss is %g"%(step,loss_value))
+                    saver.save(sess,os.path.join(MODEL_SAVE_PATH,MODEL_NAME),global_step = global_step)
+        #print "over"
+    def main(argv=None):
+        mnist=input_data.read_data_sets("/tmp/data",one_hot=True)
+        train(mnist)    
+
+    if __name__ == '__main__':
+        tf.app.run()
+  (3)mnist_eval:
+    import time
+    import tensorflow as tf
+    from tensorflow.examples.tutorials.mnist import input_data    
+
+    import mnist_inference
+    import mnist_train    
+
+    EVAL_INTERVAL_SECS = 10    
+
+    def evaluate(mnist):
+        with tf.Graph().as_default() as g:
+            x=tf.placeholder(tf.float32,[None,mnist_inference.INPUT_NODE],name="x_input")
+            y_=tf.placeholder(tf.float32,[None,mnist_inference.OUTPUT_NODE],name="y_input")
+            validate_feed = {x:mnist.validation.images,y_:mnist.validation.labels}    
+
+            y=mnist_inference.inference(x,None)
+            correct_prediction = tf.equal(tf.argmax(y,1),tf.argmax(y_,1))
+            acc = tf.reduce_mean(tf.cast(correct_prediction,tf.float32))    
+
+            ema = tf.train.ExponentialMovingAverage(mnist_train.MOVING_AVERAGE_DECAY)
+            variable_restore = ema.variables_to_restore()
+            saver = tf.train.Saver(variable_restore)    
+
+            while True:
+                with tf.Session() as sess:
+                    ckpt = tf.train.get_checkpoint_state(mnist_train.MODEL_SAVE_PATH)
+                    if ckpt and ckpt.model_checkpoint_path:
+                        saver.restore(sess,ckpt.model_checkpoint_path)    
+
+                        global_step = ckpt.model_checkpoint_path.split('/')[-1].split('-')[-1]
+                        acc_score = sess.run(acc,feed_dict=validate_feed)
+                        print("After %s training step,validation acc = %g"%(global_step,acc_score))
+                    else:
+                        print("No checkpoint file")
+                        return
+                    time.sleep(EVAL_INTERVAL_SECS)
+    def main(argv=None):
+        mnist=input_data.read_data_sets("/tmp/data",one_hot = True)
+        evaluate(mnist)
+    if __name__ == '__main__':
+        tf.app.run()
+
+第六章 图像识别与卷积神经安利过
+6.1 图像识别问题简介以及经典数据集
+6.2 卷积神经网络简介 
+  1.卷积神经网络的结构：
+    (1)输入层：为一个三维矩阵，长宽为图片的大小，深度为色彩通道(根据不同节点的颜色取值)。从输入层开始，卷积神经网络通过不同的神经网络结构讲上一层的三维矩阵转化为下一层的三维矩阵，知道最后的全连接层
+    (2)卷积层：卷积层中每一个节点的输入只是上一层神经网络的一小块，卷积层试图将神经网络中的每一个小块进行更加深入的分析从而得到抽象成都更高的特征。所以一般经过卷积层处理过的节点矩阵会变得更深。
+    (3)池化层：池化层不会改变神经网络中的三维矩阵的深度，但是可以缩小矩阵的大小(可以理解为降低图片的分辨率)。这样可以进一步缩小最后全连接层中的节点的个数。从而达到减少整个神经网络中参数的目的
+    (4)全连接层：完成最后的分类任务，卷积层和池化层已经讲图像中的信息抽象成了信息含量跟高的特征，之后仍然需要全连接层进行最后的分类
+    (5)softmax层
+6.3 卷积神经网络常用结构
+  6.3.1 卷积层
+    1.卷积层的前向传播：
+      (1)卷积层是讲一个三维输入矩阵，变成一个长宽变小，深度增加的另一个三维矩阵。
+      (2)并不对全部的输入矩阵进行卷积，只对一部分。
+      (3)对输入矩阵使用3*3或者5*5的卷积核(其实就是一个w权重参数)进行扫描。
+      (4)扫描的过程是从左上到右下，按照固定的步长，每扫描一个小矩阵，就用卷积核进行点乘(数量积)。然后将输入层的各层使用不同卷积核计算出来的结果加在一起，再加上偏置量，则就是输出节点矩阵的一个结果。
+      (5)要注意，卷积层的权重参数w。是每一个输出节点都有一套w参数，每一套参数W有输入矩阵层数个的卷积核。卷积在滑动的时候，将各个输入层数据与卷积核的数量积加在一起(再加上偏置量)，就是输出矩阵对应层(通过卷积核判断对应层)的对应位置。
+      (6)输出矩阵每一层并非都是1维的，输出矩阵的长宽，要通过输入矩阵的长宽和卷积核的大小通过公式计算。
+    2.tensorflow实现卷积层的前向传播：
+      (1)创建卷积核，和偏置量：
+        filter_weight = tf.get_variable('biases',[5,5,3,16]  ----  表示输出矩阵为5*5*3,输出的深度为16
+                ,initializer=tf.truncated_normal_initializer(stddev=0.1)
+        biases = tf.get_variable('biases',[16]
+                ,initializer=tf.constant_initializer(0.1))
+      (2)前向传播：
+        conv = tf.nn.conv2d(input,filter_weight,strides=[1,1,1,1],padding='SAME')
+          ----  input为当前层的输入节点矩阵，input应该为一个四维矩阵，第一维表示batch中的序号，后三维为实际的数据。
+          ----  filter_weight是卷积核。
+          ----  strides是步长，为了对应input的维度，这里是一个有着四个元素的数组，但是因为只对x,y有步长操作，所以第一位和最后一位都必须是1(batch一个一个移动，z层一个一个移动)
+          ----  padding：SAME表示全0填充，VALID表示不添加。
+      (3)添加偏置量：
+        bias = tf.nn.bias_add(conv,biases)  ----  为卷积层特殊准备的添加偏置量的函数，因为偏置数组中的每一个偏置量都要与一个2维的输出矩阵的每一位进行相加，所以单纯的+操作不能满足。返回添加了偏置之后的卷积输出层
+      (4)最后应用激活函数：
+        actived_conv = tf.nn.relu(bias)  ----  对整个真个输出结果调用激活函数即可。
+  6.3.2 池化层
+    1.池化层的前向传播：
+      (1)也有一个与卷积核类似的过滤器，但是运算规则为取过滤器扫描中的最大值(max pooling)或者平均值(average pooling)。
+      (2)池化层，也需要制定过滤器的尺寸，步长等信息，但是不同的是，不同层之间的过滤器完全一样。
+      (3)其实过滤器并没有权重参数，只有过滤尺寸而已。
+      (4)池化层不能减少节点矩阵的深度或者输入样例的个数。
+    2.tensorflow实现池化层(最大池化层)：
+      pool = tf.nn.,ax_pool(actived_conv,ksize=[1,3,3,1],strides=[1,2,2,1],padding='SAME')
+        ----  actived_conv为输入节点矩阵，
+        ----  为池化过滤器的尺寸大小，同样是一个4个元素的一维数组，第一位和最后一维都必须为1，意味着过滤器不能跨越不同的batch，不能跨越层数。
+        ----  strides为步长，同样为1，第一位和最后一维都必须是1，因为batch上一个一个移动，深度上也是一位一位移动。
+        ----  padding表示填充，'SAME'表示全零填充，'VALID'表示不填充
+6.4 经典卷积网络模型
+  6.4.1 LeNet-5 模型
+    1.LeNet-5模型的各个层数(一共7层)：
+      (1)第一层，卷积层：
+        输入：32*32*1(原始数据)
+        卷积核：5*5*6 VALID strides = 1
+        参数：5*5*1*6+6 = 156个参数
+        输出：28*28*6
+        连接：28*28*6*(25+1) = 122304个连接
+      (2)第二层，池化层：
+        输入：28*28*6
+        过滤器：2*2 strides = 2
+        输出：14*14*6
+      (3)第三层：卷积层：
+        输入：14*14*6
+        卷积核：5*5*16 VALID strides = 1
+        参数：5*5*16+16 = 2416
+        输出：10*10*16
+        连接：10*10*16*(25+1)=41600
+      (4)第四层，池化层：
+        输入：10*10*16
+        过滤器：2*2 strides = 2
+        输出：5*5*16
+      (5)第五层，全连接层：实际上是一个卷积核也是5*5的卷积层
+        输入：5*5*16
+        输出：120
+      (6)第六层，全连接层：
+        输入：120
+        输出：84
+        参数：120*84+8=10164
+      (7)第七层，全连接层：
+        输入：84
+        输出：10
+        参数：84*10+10 = 850
+

@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="869e18ac-76c9-425c-9af7-b0028a222eb9" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../../README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../golandProject/.idea/golandProject.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../../golandProject/.idea/golandProject.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../golandProject/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../golandProject/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../golandProject/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../golandProject/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../golandProject/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../golandProject/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../golandProject/Server_demo.go" beforeDir="false" afterPath="$PROJECT_DIR$/../../golandProject/Server_demo.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../golang/Server_demo.go" beforeDir="false" afterPath="$PROJECT_DIR$/../../golang/Server_demo.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../golang/Server_demo2.go" beforeDir="false" afterPath="$PROJECT_DIR$/../../golang/Server_demo2.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../subl_code/LearnGolang2.go" beforeDir="false" afterPath="$PROJECT_DIR$/../../subl_code/LearnGolang2.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../subl_code/ScanTest.go" beforeDir="false" afterPath="$PROJECT_DIR$/../../subl_code/ScanTest.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../subl_code/SocketGolang" beforeDir="false" afterPath="$PROJECT_DIR$/../../subl_code/SocketGolang" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../subl_code/SocketGolang.go" beforeDir="false" afterPath="$PROJECT_DIR$/../../subl_code/SocketGolang.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../subl_code/Socket_Client_Test.go" beforeDir="false" afterPath="$PROJECT_DIR$/../../subl_code/Socket_Client_Test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../subl_code/Socket_Server.go" beforeDir="false" afterPath="$PROJECT_DIR$/../../subl_code/Socket_Server.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../subl_code/Socket_Server_Test" beforeDir="false" afterPath="$PROJECT_DIR$/../../subl_code/Socket_Server_Test" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../subl_code/Socket_Server_Test.go" beforeDir="false" afterPath="$PROJECT_DIR$/../../subl_code/Socket_Server_Test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../subl_code/Socket_client.go" beforeDir="false" afterPath="$PROJECT_DIR$/../../subl_code/Socket_client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../subl_code/golong_json.go" beforeDir="false" afterPath="$PROJECT_DIR$/../../subl_code/golong_json.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../subl_code/test1.go" beforeDir="false" afterPath="$PROJECT_DIR$/../../subl_code/test1.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../subl_note/HelloWorldCuda.cu" beforeDir="false" afterPath="$PROJECT_DIR$/../../subl_note/HelloWorldCuda.cu" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../subl_note/Thinking in Java.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../../subl_note/Thinking in Java.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../subl_note/android问题笔记.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../../subl_note/android问题笔记.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../subl_note/golang语法总结" beforeDir="false" afterPath="$PROJECT_DIR$/../../subl_note/golang语法总结" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../subl_note/python" beforeDir="false" afterPath="$PROJECT_DIR$/../../subl_note/python" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../subl_note/tensorflow笔记.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../../subl_note/tensorflow笔记.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../subl_note/test.cu" beforeDir="false" afterPath="$PROJECT_DIR$/../../subl_note/test.cu" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Chapter4_LossFunctionDIY.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Chapter4_LossFunctionDIY.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MNIST_data/t10k-images-idx3-ubyte.gz" beforeDir="false" afterPath="$PROJECT_DIR$/../MNIST_data/t10k-images-idx3-ubyte.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MNIST_data/t10k-labels-idx1-ubyte.gz" beforeDir="false" afterPath="$PROJECT_DIR$/../MNIST_data/t10k-labels-idx1-ubyte.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MNIST_data/train-images-idx3-ubyte.gz" beforeDir="false" afterPath="$PROJECT_DIR$/../MNIST_data/train-images-idx3-ubyte.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MNIST_data/train-labels-idx1-ubyte.gz" beforeDir="false" afterPath="$PROJECT_DIR$/../MNIST_data/train-labels-idx1-ubyte.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NeutralNetWorkStructure" beforeDir="false" afterPath="$PROJECT_DIR$/../NeutralNetWorkStructure" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NeutralNetWorkTest.py" beforeDir="false" afterPath="$PROJECT_DIR$/../NeutralNetWorkTest.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../TensorflowPythonClass.py" beforeDir="false" afterPath="$PROJECT_DIR$/../TensorflowPythonClass.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../chapter1_CompleteNeuralNetwork.py" beforeDir="false" afterPath="$PROJECT_DIR$/../chapter1_CompleteNeuralNetwork.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../chapter4_L2RegularizationInComplexNetwork.py" beforeDir="false" afterPath="$PROJECT_DIR$/../chapter4_L2RegularizationInComplexNetwork.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../chapter5_MNIST_inputdata.py" beforeDir="false" afterPath="$PROJECT_DIR$/../chapter5_MNIST_inputdata.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../chapter5_MinistTrain.py" beforeDir="false" afterPath="$PROJECT_DIR$/../chapter5_MinistTrain.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../chapter5_RevisedInference.py" beforeDir="false" afterPath="$PROJECT_DIR$/../chapter5_RevisedInference.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../chapter5_Saver.py" beforeDir="false" afterPath="$PROJECT_DIR$/../chapter5_Saver.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../chapter5_SaverRestore.py" beforeDir="false" afterPath="$PROJECT_DIR$/../chapter5_SaverRestore.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../checkpoint" beforeDir="false" afterPath="$PROJECT_DIR$/../checkpoint" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../placeholder.py" beforeDir="false" afterPath="$PROJECT_DIR$/../placeholder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../pyData.py" beforeDir="false" afterPath="$PROJECT_DIR$/../pyData.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../test1.py" beforeDir="false" afterPath="$PROJECT_DIR$/../test1.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../tmp/data/t10k-images-idx3-ubyte.gz" beforeDir="false" afterPath="$PROJECT_DIR$/../tmp/data/t10k-images-idx3-ubyte.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../tmp/data/t10k-labels-idx1-ubyte.gz" beforeDir="false" afterPath="$PROJECT_DIR$/../tmp/data/t10k-labels-idx1-ubyte.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../tmp/data/train-images-idx3-ubyte.gz" beforeDir="false" afterPath="$PROJECT_DIR$/../tmp/data/train-images-idx3-ubyte.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../tmp/data/train-labels-idx1-ubyte.gz" beforeDir="false" afterPath="$PROJECT_DIR$/../tmp/data/train-labels-idx1-ubyte.gz" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="mnist_train_con.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/../chapter6_Convolutions/mnist_train_con.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="570">
+              <caret line="46" column="30" selection-start-line="46" selection-start-column="30" selection-end-line="46" selection-end-column="30" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/mnist_train.py" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="1181" />
+    <option name="y" value="225" />
+    <option name="width" value="875" />
+    <option name="height" value="476" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="chapter5_MnistTrain" type="b2602c69:ProjectViewProjectNode" />
+              <item name="chapter5_MnistTrain" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../chapter6_Convolutions" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.tools" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Python.mnist_train">
+    <configuration name="Unnamed" type="PythonConfigurationType" factoryName="Python">
+      <module name="chapter5_MnistTrain" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="/usr/bin/python2.7" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/.." />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
+    <configuration name="mnist_train" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="chapter5_MnistTrain" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="LD_LIBRARY_PATH" value="/usr/local/cuda/lib64/ :/usr/local/cuda/lib64/ " />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/mnist_train.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.Unnamed" />
+      <item itemvalue="Python.mnist_train" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.mnist_train" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="869e18ac-76c9-425c-9af7-b0028a222eb9" name="Default" comment="" />
+      <created>1532501989154</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1532501989154</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="1430" y="-11" width="2497" height="1452" extended-state="6" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.0881877" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.50161815" side_tool="true" visible="true" weight="0.32901752" />
+      <window_info anchor="bottom" id="Version Control" order="7" />
+      <window_info anchor="bottom" id="Python Console" order="7" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49676377" weight="0.3335872" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.49838188" visible="true" weight="0.32901752" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="1" />
+    </layout>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/mnist_train.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="930">
+          <caret line="62" lean-forward="true" selection-start-line="62" selection-end-line="62" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../chapter6_Convolutions/mnist_train_con.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="615">
+          <caret line="46" column="30" lean-forward="true" selection-start-line="46" selection-start-column="30" selection-end-line="46" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mnist_train.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="765">
+          <caret line="51" column="16" lean-forward="true" selection-start-line="51" selection-start-column="16" selection-end-line="51" selection-end-column="16" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mnist_train.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="750">
+          <caret line="50" column="61" selection-start-line="50" selection-start-column="61" selection-end-line="50" selection-end-column="61" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mnist_train.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="750">
+          <caret line="50" column="61" selection-start-line="50" selection-start-column="61" selection-end-line="50" selection-end-column="61" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mnist_train.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="825">
+          <caret line="59" selection-start-line="59" selection-end-line="59" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mnist_train.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="885">
+          <caret line="59" selection-start-line="59" selection-end-line="59" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mnist_train.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="870">
+          <caret line="62" selection-start-line="62" selection-end-line="62" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../chapter6_Convolutions/mnist_train_con.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="570">
+          <caret line="46" column="30" selection-start-line="46" selection-start-column="30" selection-end-line="46" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
